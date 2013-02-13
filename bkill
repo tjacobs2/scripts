@@ -1,0 +1,1 @@
+for i in `ps aux | grep tjacobs2 | grep $1 | grep -ve "--color=auto" | grep -v grep | awk '{print $2}'`; do echo "killing `ps aux | grep ${i} | grep -v grep`"; kill -9 $i; done

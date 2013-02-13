@@ -1,0 +1,7 @@
+#make the plots
+set term post eps color
+set out 'rmsd_vs_energy.eps'
+set xlabel "RMSD"
+set ylabel "Rosetta energy"
+#set yrange[-730:-680]
+plot 'rmsd_vs_energy.plot'
