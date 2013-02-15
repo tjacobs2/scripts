@@ -1,6 +1,10 @@
 #!/bin/bash
+#
+# This script is used to split up the list of pdbs in the
+# current directory into managable groups analysis in pyMOL
+#
 if [[ -z "$1" ]]; then
-	echo "usage: pymolSplit *pdb group index*"
+	echo "usage: split_for_pymol.sh *pdb group index*"
 	exit 1
 fi
 

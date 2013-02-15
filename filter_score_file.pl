@@ -16,9 +16,9 @@ use Getopt::Long;
 
 if($help == 1){
 	print "retrieve score file entries on any of the following metrics (assuming they exist in your score file):
-  input* -- score file name
-  score -- score cutoff
-  ddg -- ddg cutoff
+	input* -- score file name
+	score -- score cutoff
+	ddg -- ddg cutoff
 	rmsd -- rmsd cutoff
 	sasa -- sasa cutoff
 	unsat -- unsat cutoff
