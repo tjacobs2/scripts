@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+#USE THIS tr '\015' '\n' < very_filtered_scores.txt
+
 die "Usage: $0 < files >\n" unless @ARGV;
 
 for $file (@ARGV)

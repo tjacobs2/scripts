@@ -1,0 +1,233 @@
+This file contains a makefile for building ProFit under DOS using the
+GNU C-compiler
+
+This was kindly supplied by Wolfgang Schechinger
+(diabetes@lrz.uni-muenchen.de).  I have neither tried this, nor can in
+any way support it, correct any problems, etc. Please address any
+problems or queries to Wolfgang.
+
+I have tidied up the text a little, but otherwise the rest of this
+file is attributable to Wolfgang.
+
+
+-------------------- START OF WOLFGANG'S FILE ----------------------
+
+Some notes:
+
+The command.com environment size in the config.sys file was set to
+2048 bytes.
+
+The major problems that occured during the setup of the makefile were:
+
++ DOS command lines have a length limit. Thus I decided to make the
+compiler produce all object files with very short names into one
+directory.
+
++ First, the linker couldn't find some mathematical functions until I
+added the parameter -lm as a linking option.
+
+Further details you will find as remarks in the makefiles.
+
+
+Since I had to add some modifications to the gognu.bat file that must
+be executed to set some environment variables to make the gcc work, I
+will send you this file too.
+
+The gcc compiler may be obtained via anonymous ftp from
+ftp.uni-regensburg.de. It's located in the directory
+/pub/freeware/software/dos/sprachen.386/
+
+[*** Added ACRM:
+You may also obtain the software from:
+ftp://micros.hensa.ac.uk/micros/ibmpc/f/f461/
+According to the FAQ in this directory, the minimum set of files required is:
+djeoeXXX.zip, djdevXXX.zip, gccXXXbn.zip, gasXXbn.zip, and bnuXXbn.zip
+***]
+
+I'm sure the work I did is quite a dirty hack: This is my first
+experience with a c compiler and the c language, so don't expect
+too much.
+
+If you should want to give away or sell executables produced with gcc,
+please follow the licence notes from gnu-c.  (You then should give
+away the intermediate profit, not profit.exe. profit may be run using
+the runtime module go32.exe by entering go32 profit at the command
+line)
+
+Here comes the makefile. It must be placed in the ProFit/SRC directory.
+
+
+
+(beginning of file make.bat)
+-------------
+
+@echo off
+goto start
+:: let's jump over the following section
+*************************************************************************
+This Batchfile was written at April 12 1996 by
+
+Wolfgang Schechinger
+Doktorshofstrasse 12
+92313 Berg-Hausheim
+Germany
+
+
+Phone:     +49 (89) 30 79 31 24
+Fax:                30 81 73 3
+EMail:     DIABETES@LRZ.UNI-MUENCHEN.DE
+
+Standard general disclaimer applies: no warranty for anything !
+I would be glad if anyone who is using this makefile would send me a picture
+postcard from her/his hometown!
+This code is dedicated to the public domain, but respect the licence from
+ProFit and the compiler
+
+**************************************************************************
+
+   Usage: of this file (MAKE.BAT)
+
+   After your system is set up for the gcc compiler, just type MAKE to
+   generate the 386 executable PROFIT.EXE
+   If you desire anonther filename for the executable than profit you may
+   specify a filename at the command line, e.g.: MAKE PROFIT_2
+  
+
+   Enter make /h for obtaining help on command line options
+
+****************************************************************************
+
+:start
+:: now we will begin
+set cc=gcc
+:: the compiler we will use is gcc
+set flags= -c -O
+:: set the compiler flags to compile only and optimize
+
+set outfile=profit
+::the default executable filename will be profit
+
+if +%1+==+/?+ goto usage
+if +%1+==+?+ goto usage
+if +%1+==+/h+ goto usage
+if +%1+==+h+ goto usage
+goto start2
+:usage
+
+echo usage: make [outfile] [-detail]
+echo options MUST start witha a "-"
+echo you may specify an alternate output filename [outfile]
+echo if you want to see details during compilation, specify "-detail"
+goto stop
+
+:start2
+if +%1+==++ goto start3
+::no arguments ?
+if +%2+==+-detail+ set flags2= -v
+if +%2+==+-detail+ set outfile=%1
+if +%1+==+-detail+ set flags2= -v
+if not +%1+==+-detail+ set outfile=%1
+:: allow the user to define an alternate name for the executable
+::
+
+:start3
+:: step 1: generate object code from BIOPLIB files
+
+echo generating object code
+echo - be patient, this may take a while -
+
+%cc% %flags% main.c -o 1.o %flags2%
+%cc% %flags% todo.c -o 2.o %flags2%
+%cc% %flags% nwalign.c -o 3.o %flags2%
+%cc% %flags% fitting.c -o 4.o %flags2%
+cd bioplib
+%cc% %flags% apmatpdb.c -o ..\5.o %flags2%
+%cc% %flags% calcpdb.c -o ..\6.o %flags2%
+%cc% %flags% modpdb.c -o ..\7.o %flags2%
+%cc% %flags% pdb2seq.c -o ..\8.o %flags2%
+%cc% %flags% pdblist.c -o ..\9.o %flags2%
+%cc% %flags% parseres.c -o ..\a.o %flags2%
+%cc% %flags% readpdb.c -o ..\b.o %flags2%
+%cc% %flags% readpir.c -o ..\c.o %flags2%
+%cc% %flags% windio.c -o ..\d.o %flags2%
+%cc% %flags% writepdb.c -o ..\e.o %flags2%
+%cc% %flags% align.c -o ..\f.o %flags2%
+%cc% %flags% angle.c -o ..\g.o %flags2%
+%cc% %flags% array.c -o ..\h.o %flags2%
+%cc% %flags% fit.c -o ..\i.o %flags2%
+%cc% %flags% fsscanf.c -o ..\k.o %flags2%
+%cc% %flags% general.c -o ..\l.o %flags2%
+%cc% %flags% help.c -o ..\m.o %flags2%
+%cc% %flags% matrix.c -o ..\n.o %flags2%
+%cc% %flags% parse.c -o ..\o.o %flags2%
+%cc% %flags% throne.c -o ..\p.o %flags2%
+%cc% %flags% zonepdb.c -o ..\q.o %flags2%
+cd ..
+:: go back to mainfile directory
+
+:: step 2: generate object code from main files
+
+::now the .o files will be linked
+echo linking object code
+%cc% -o %outfile% 1.o 2.o 3.o 4.o 5.o 6.o 7.o 8.o 9.o a.o b.o c.o d.o e.o f.o g.o h.o i.o k.o l.o m.o n.o o.o p.o q.o -lm -v
+
+:: the renaming/numbering of all .o-files is due to commad line length
+:: limitations -lm is necessary because the gcc-linker must find the
+:: /LIB/libm.a math library
+:: the executable outputfile is named profit
+
+echo stripping the executable
+strip %outfile%
+::remove some surplus stuff
+echo generating the DOS executable
+call aout2exe %outfile%
+:: generate an .exe file
+
+::do some cleanup
+echo doing some cleanup
+set flags=
+set flags2=
+set outfile=
+::free the environment
+del *.o
+::remove all .o files (they are not needed anymore)
+:end
+:stop
+echo finished!
+echo to run the executable you will need the file go32.exe
+
+
+
+--------------------------
+(end of make.bat)
+
+Here comes my modification of gognu.bat (I replaced some "/"s by "\"s)
+
+beginning of file gognu.bat
+--------------------------
+@echo off
+echo environment variables prepared for gnu-cpp
+rem Ulrich Windl 18-Apr-91
+rem Minor modifications by Wolfgang Schechinger
+
+
+subst s: i:\compiler\gnu-cpp
+set gnucdrive=s:
+rem if "%1"=="" goto info
+set GCCINC=%gnucdrive%\INCLUDE
+set GCCLIB=%gnucdrive%\LIB
+set GCCBIN=%gnucdrive%\BIN
+set GCCTMP=%gnucdrive%\.
+set GO32=ansi driver %gnucdrive%/drivers/vga.grd gw 800 gh 600 tw 80 th 25
+set bison_simple=%GCCLIB%/bison.simple
+set bison_hairy=%GCCLIB%/bison.hairy
+set flex_skeleton=%GCCLIB%/flex.skeleton
+set oldpath=%path%
+set path=%oldpath%;%gnucdrive%\bin
+goto ende
+:info
+echo Aufruf: GOGNU Gnu-Wurzelverzeichnis
+:ende
+
+--------------------------
+end of file gognu.bat

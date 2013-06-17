@@ -45,7 +45,7 @@ for case in switch(args.servername):
 	if case('killdevil'):
 		server="killdevil.unc.edu"
 		break
-	if case('imac'):
+	if case('koblet'):
 		server="152.19.81.194"
 		break
 	if case():
@@ -68,4 +68,6 @@ if(args.exclude):
 if(args.delete):
 	rsync_options += " --delete "
 
-os.system("rsync "+rsync_options+" -v -e ssh "+args.user+"@"+server+":~/PROJECTS/"+project_path+"/ ~/PROJECTS/"+project_path);
+command = "rsync "+rsync_options+" -v -e ssh '"+args.user+"@"+server+":~/PROJECTS"+project_path+"/*' ~/PROJECTS"+project_path
+#print command
+os.system(command)
