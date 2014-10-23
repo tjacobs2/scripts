@@ -43,8 +43,6 @@ foreach $fileName (@foo) {
 }
 #sort the resnums array by numbers
 @resNums = sort {$a <=> $b} @resNums;
-print join(",", @resnums);
-exit;
 
 foreach $res (@resNums){
 	print $nativesTable[$res] . "\t";
@@ -98,7 +96,7 @@ my @frequencyTable;
 for (my $j=0; $j<=$count-1; $j++) {
   foreach my $res (@resNums){
     my $thisres = $finalAATable[$j][ $res ];
-    print "Residue # ". $res ." is: " . $thisres . "\n";
+    #print "Residue # ". $res ." is: " . $thisres . "\n";
     #does nothing yet
     #get index of Amino Acid
     my $res_id = firstidx { $_ eq $thisres } @AAlist;

@@ -6,5 +6,5 @@ then
   exit 1
 fi
 
-awk '{ if(NR==2) { for (i=1; i<=NF; i++){ print i" "$i } } }' $1
+awk '{ if(NR<5 && ($2=="total_score" || $1=="total_score")) { for (i=1; i<=NF; i++){ print i" "$i } } }' $1
 

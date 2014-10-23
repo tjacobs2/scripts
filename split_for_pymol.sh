@@ -9,7 +9,7 @@ if [[ -z "$1" ]]; then
 fi
 
 numPdbs=`find . -name "*.pdb" | wc -l`
-delimiter=30
+delimiter=20
 group=$1
 include=`echo ${delimiter}*${group} | bc`
 max=`echo ${delimiter}*${group}-${delimiter} | bc`
