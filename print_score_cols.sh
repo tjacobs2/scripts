@@ -6,5 +6,5 @@ then
   exit 1
 fi
 
-awk '{ if(NR==1) { for (i=1; i<=NF; i++){ print i" "$i } } }' $1
+awk '{ if(NR==2) { for (i=1; i<=NF; i++){ print i" "$i } } }' $1
 
