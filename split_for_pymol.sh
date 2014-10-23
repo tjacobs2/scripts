@@ -8,8 +8,8 @@ if [[ -z "$1" ]]; then
 	exit 1
 fi
 
-numPdbs=`ls *.pdb | wc -l`
-delimiter=30
+numPdbs=`find . -name "*.pdb" | wc -l`
+delimiter=20
 group=$1
 include=`echo ${delimiter}*${group} | bc`
 max=`echo ${delimiter}*${group}-${delimiter} | bc`
@@ -22,5 +22,5 @@ fi
 if [ $max -ge $numPdbs ]; then
 	echo "Not that many groups"
 else
-	ls *.pdb | head -n $include | tail -n $delimiter | tr '\n' ' '
+	find . -name "*.pdb" | head -n $include | tail -n $delimiter | tr '\n' ' '
 fi
