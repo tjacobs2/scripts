@@ -10,7 +10,7 @@ def is_number(s):
     except ValueError:
         return False
 
-parser = argparse.ArgumentParser(description="Evaluate statistics for each fragment window")
+parser = argparse.ArgumentParser(description="Given a score file, calculate the funnel score using hardcoded columns 2 and 24 (I know, this should be fixed) from the given score file")
 parser.add_argument("score_file", help="score file")
 args = parser.parse_args()
 
